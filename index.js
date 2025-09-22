@@ -6,10 +6,10 @@ require('dotenv').config();
 // Importar configuración
 const { testConnection } = require('./src/config/database');
 
-// Importar rutas principales
+/* Importar rutas principales
 const authRoutes = require('./src/routes/authRoutes');
-const userRoutes = require('./@routes/userRoutes');
-const gimnasioRoutes = require('./@routes/gimnasioRoutes');
+const userRoutes = require('./src/routes/userRoutes');
+const gimnasioRoutes = require('./src/routes/gimnasioRoutes');*/
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -47,10 +47,30 @@ app.get('/api/users', (req, res) => {
   res.json(users);
 });
 
-// Usar todas las rutas de la API con prefijo /api
+/* Usar todas las rutas de la API con prefijo /api
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/gimnasios', gimnasioRoutes);
+app.use('/api/gimnasios', gimnasioRoutes);*/
+
+//rutas de usuarios
+const usuariosRoutes = require('./src/routes/usuariosRoutes');
+app.use('/api/usuarios', usuariosRoutes);
+
+// rutas de empleados
+const empleadosRoutes = require('./src/routes/empleadosRoutes');
+app.use('/api/empleados', empleadosRoutes);
+
+// ruta de caja
+const cajaRoutes = require('./src/routes/cajaRoutes');
+app.use('/api/caja', cajaRoutes);
+
+// rutas de membresias
+const membresiasRoutes = require('./src/routes/membresiasRoutes');
+app.use('/api/membresias', membresiasRoutes);
+
+// rutas de reportes
+const reportesRoutes = require('./src/routes/reportesRoutes');
+app.use('/api/reportes', reportesRoutes);
 
 // Middleware para manejar rutas no encontradas
 app.use((req, res) => {

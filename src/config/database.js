@@ -6,7 +6,7 @@ const dbConfig = {
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password: '1007428480',
+  password: '',
   database: 'HIT',
   waitForConnections: true,
   connectionLimit: 10,

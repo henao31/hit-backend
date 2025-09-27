@@ -2,15 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 require('dotenv').config();
-
 // Importar configuración
 const { testConnection } = require('./src/config/database');
-
-/* Importar rutas principales
-const authRoutes = require('./src/routes/authRoutes');
-const userRoutes = require('./src/routes/userRoutes');
-const gimnasioRoutes = require('./src/routes/gimnasioRoutes');*/
-
+const routes = require('./src/routes/routes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -20,14 +14,8 @@ app.use(morgan('combined'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rutas básicas
-app.get('/', (req, res) => {
-  res.json({
-    message: '¡Bienvenido a tu API con Express.js!',
-    version: '1.0.0',
-    status: 'running'
-  });
-});
+// Rutas
+app.use('/api', routes);
 
 app.get('/api/health', (req, res) => {
   res.json({
@@ -37,40 +25,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Ruta de ejemplo para usuarios
-app.get('/api/users', (req, res) => {
-  const users = [
-    { id: 1, name: 'Juan', email: 'juan@ejemplo.com' },
-    { id: 2, name: 'María', email: 'maria@ejemplo.com' },
-    { id: 3, name: 'Carlos', email: 'carlos@ejemplo.com' }
-  ];
-  res.json(users);
-});
 
-/* Usar todas las rutas de la API con prefijo /api
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/gimnasios', gimnasioRoutes);*/
-
-//rutas de usuarios
-const usuariosRoutes = require('./src/routes/usuariosRoutes');
-app.use('/api/usuarios', usuariosRoutes);
-
-// rutas de empleados
-const empleadosRoutes = require('./src/routes/empleadosRoutes');
-app.use('/api/empleados', empleadosRoutes);
-
-// ruta de caja
-const cajaRoutes = require('./src/routes/cajaRoutes');
-app.use('/api/caja', cajaRoutes);
-
-// rutas de membresias
-const membresiasRoutes = require('./src/routes/membresiasRoutes');
-app.use('/api/membresias', membresiasRoutes);
-
-// rutas de reportes
-const reportesRoutes = require('./src/routes/reportesRoutes');
-app.use('/api/reportes', reportesRoutes);
 
 // Middleware para manejar rutas no encontradas
 app.use((req, res) => {
@@ -98,9 +53,6 @@ async function startServer() {
       console.error('❌ No se pudo conectar a la base de datos. Verifica la configuración.');
       process.exit(1);
     }
-
-    
-
     // Iniciar servidor
     app.listen(PORT, () => {
       console.log(`🚀 Servidor ejecutándose en http://localhost:${PORT}`);
